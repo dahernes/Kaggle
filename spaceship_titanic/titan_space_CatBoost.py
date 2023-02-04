@@ -8,11 +8,11 @@
 from pathlib import Path
 import pandas as pd
 
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from sklearn.compose import make_column_transformer
+
+from catboost import CatBoostClassifier
 
 # from warnings import filterwarnings, simplefilter
 # simplefilter(action='ignore', category=FutureWarning)
@@ -25,10 +25,10 @@ base_folder = Path.cwd()
 data_folder = base_folder / "data"
 
 # flags
-APPROACH_1 = False
+APPROACH_1 = True
 APPROACH_2 = False
 APPROACH_3 = False
-APPROACH_4 = True
+APPROACH_4 = False
 
 # constants
 RAND_SEED = 1337
@@ -214,15 +214,79 @@ titan = titan_dp.copy()
 X = titan
 y = X.pop('Transported').values
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=VALID_SIZE, random_state=RAND_SEED)
+print('Labels: {}'.format(set(y)))
+print('Zero count = {}, One count = {}'.format(len(y) - sum(y), sum(y)))
+
+# %%
+# categorical features declaration
+cat_features = list(range(0, X.shape[1]))
+print(cat_features)
+
+# %%
+# train / valid split
+X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=VALID_SIZE, random_state=RAND_SEED)
 
 # %%
 # TODO CatBoost
+model = CatBoostClassifier(
+    loss_function='Logloss',
+)
+
+grid_params = {
+    'iterations': [300, 400],
+    'random_seed': [RAND_SEED],
+    'learning_rate': [0.05, 0.1],
+    'depth': [4, 6, 8, 10],
+    'l2_leaf_reg': [1, 3, 5, 7, 9]
+}
+
+grid_search_results = model.grid_search(grid_params,
+                                        X=X_train,
+                                        y=y_train,
+                                        cv=5)
+
+# %%
+print(grid_search_results['params'])
+
+# %%
+# best params
+#
+# Approach 1:
+# {'depth': 6, 'random_seed': 1337, 'l2_leaf_reg': 3, 'iterations': 300, 'learning_rate': 0.1}
+#
+# Approach 2:
+#
+#
+# Approach 3:
+#
+# Approach 4:
+#
+
+# %%
+cat_model = CatBoostClassifier(
+    iterations=300,
+    learning_rate=0.1,
+    depth=6,
+    l2_leaf_reg=3,
+    custom_loss=['AUC', 'Accuracy'],
+    random_seed=RAND_SEED,
+    use_best_model=True
+)
+
+cat_model.fit(
+    X_train, y_train,
+    cat_features=cat_features,
+    eval_set=(X_valid, y_valid),
+)
+
+# %%
+print(cat_model.score(X_train, y_train))
+print(cat_model.score(X_valid, y_valid))
 
 # %%
 # Approach 1:
-# mean Train_Score =
-# mean Valid_Score =
+# mean Train_Score = 85.94
+# mean Valid_Score = 78.38
 #
 # Approach 2:
 # mean Train_Score =
