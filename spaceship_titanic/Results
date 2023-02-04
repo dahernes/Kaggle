@@ -16,3 +16,20 @@ Random Forest:
 # Approach 4:
 # mean Train_Score = 86.49
 # mean Valid_Score = 79.18
+
+XGB:
+# Approach 1:
+# mean Train_Score = 89.33
+# mean Valid_Score = 81.12
+#
+# Approach 2:
+# mean Train_Score = 93.9
+# mean Valid_Score = 81.06
+#
+# Approach 3:
+# mean Train_Score = 89.32
+# mean Valid_Score = 81.0
+#
+# Approach 4:
+# mean Train_Score = 86.38
+# mean Valid_Score = 80.48
