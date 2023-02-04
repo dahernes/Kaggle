@@ -1,0 +1,18 @@
+Results of all Models
+
+Random Forest:
+# Approach 1:
+# mean Train_Score = 87.41
+# mean Valid_Score = 80.42
+#
+# Approach 2:
+# mean Train_Score = 89.38
+# mean Valid_Score = 80.88
+#
+# Approach 3:
+# mean Train_Score = 87.56
+# mean Valid_Score = 80.59
+#
+# Approach 4:
+# mean Train_Score = 86.49
+# mean Valid_Score = 79.18
