@@ -25,10 +25,10 @@ base_folder = Path.cwd()
 data_folder = base_folder / "data"
 
 # flags
-APPROACH_1 = True
+APPROACH_1 = False
 APPROACH_2 = False
 APPROACH_3 = False
-APPROACH_4 = False
+APPROACH_4 = True
 
 # constants
 RAND_SEED = 1337
@@ -255,19 +255,20 @@ print(grid_search_results['params'])
 # {'depth': 6, 'random_seed': 1337, 'l2_leaf_reg': 3, 'iterations': 300, 'learning_rate': 0.1}
 #
 # Approach 2:
-#
+# {'depth': 8, 'random_seed': 1337, 'l2_leaf_reg': 3, 'iterations': 400, 'learning_rate': 0.05}
 #
 # Approach 3:
+# {'depth': 8, 'random_seed': 1337, 'l2_leaf_reg': 3, 'iterations': 400, 'learning_rate': 0.05}
 #
 # Approach 4:
-#
+# {'depth': 6, 'random_seed': 1337, 'l2_leaf_reg': 5, 'iterations': 300, 'learning_rate': 0.1}
 
 # %%
 cat_model = CatBoostClassifier(
-    iterations=300,
+    iterations=400,
     learning_rate=0.1,
     depth=6,
-    l2_leaf_reg=3,
+    l2_leaf_reg=5,
     custom_loss=['AUC', 'Accuracy'],
     random_seed=RAND_SEED,
     use_best_model=True
@@ -275,7 +276,6 @@ cat_model = CatBoostClassifier(
 
 cat_model.fit(
     X_train, y_train,
-    cat_features=cat_features,
     eval_set=(X_valid, y_valid),
 )
 
@@ -289,13 +289,13 @@ print(cat_model.score(X_valid, y_valid))
 # mean Valid_Score = 78.38
 #
 # Approach 2:
-# mean Train_Score =
-# mean Valid_Score =
+# mean Train_Score = 90.65
+# mean Valid_Score = 81.87
 #
 # Approach 3:
-# mean Train_Score =
-# mean Valid_Score =
+# mean Train_Score = 90.02
+# mean Valid_Score = 82.21
 #
 # Approach 4:
-# mean Train_Score =
-# mean Valid_Score =
+# mean Train_Score = 85.17
+# mean Valid_Score = 80.91

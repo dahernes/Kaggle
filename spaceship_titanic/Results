@@ -33,3 +33,20 @@ XGB:
 # Approach 4:
 # mean Train_Score = 86.38
 # mean Valid_Score = 80.48
+
+CatBoost:
+# Approach 1:
+# mean Train_Score = 85.94
+# mean Valid_Score = 78.38
+#
+# Approach 2:
+# mean Train_Score = 90.65
+# mean Valid_Score = 81.87
+#
+# Approach 3:
+# mean Train_Score = 90.02
+# mean Valid_Score = 82.21
+#
+# Approach 4:
+# mean Train_Score = 85.17
+# mean Valid_Score = 80.91
