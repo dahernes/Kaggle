@@ -224,7 +224,7 @@ def train_model(model, optim, train_dl):
     for x1, x2, y in train_dl:
         batch = y.shape[0]
         output = model(x1, x2)
-        loss = f.cross_entropy(output, y)
+        loss = f.binary_cross_entropy_with_logits(output, y)
         optim.zero_grad()
         loss.backward()
         optim.step()
@@ -243,7 +243,7 @@ def val_loss(model, valid_dl):
     for x1, x2, y in valid_dl:
         current_batch_size = y.shape[0]
         out = model(x1, x2)
-        loss = f.cross_entropy(out, y)
+        loss = f.binary_cross_entropy_with_logits(out, y)
         sum_loss += current_batch_size * (loss.item())
         total += current_batch_size
         pred = torch.max(out, 1)[1]
