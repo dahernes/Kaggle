@@ -41,7 +41,7 @@ titan_benchmark[objects] = titan_benchmark[objects].astype("category")
 x = titan_benchmark
 y = x.pop("Transported").values
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1337)
+x_train, x_valid, y_train, y_valid = train_test_split(x, y, test_size=0.2, random_state=1337)
 
 # %%
 model = xgb.XGBClassifier()
@@ -57,7 +57,9 @@ param_grid = {
     'model__max_depth': [7],
     'model__n_estimators': [500],
     'model__colsample_bytree': [1],
-    'model__learning_rate': [0.1]
+    'model__learning_rate': [0.1],
+    'model__tree_method': ["hist"],
+    'model__enable_categorical': [True]
 }
 
 # Hyperparameter Optimierung via GridSearch
@@ -80,6 +82,9 @@ acc_score_train = grid_xgb.score(x_train, y_train)
 acc_score_xgbtitan_train = round(acc_score_train * 100, 2)
 print(acc_score_xgbtitan_train)
 
-xgb_train_predicts_test = grid_xgb.predict(x_test)
-acc_test_xgb = accuracy_score(y_test, xgb_train_predicts_test)
-print(round(acc_test_xgb * 100, 2))
+xgb_predicts_valid = grid_xgb.predict(x_valid)
+acc_valid_xgb = accuracy_score(y_valid, xgb_predicts_valid)
+print(round(acc_valid_xgb * 100, 2))
+
+# train: 92.42
+# valid: 78.38
