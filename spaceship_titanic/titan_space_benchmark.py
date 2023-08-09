@@ -31,9 +31,13 @@ data_folder = base_folder / "data"
 titan = pd.read_csv(data_folder / "train.csv")
 
 # %%
-# train/valid data split
+# transform object datatype into category datatpye
 titan_benchmark = titan.copy()
+objects = ["PassengerId", "HomePlanet", "CryoSleep", "Cabin", "Destination", "VIP", "Name"]
+titan_benchmark[objects] = titan_benchmark[objects].astype("category")
 
+# %%
+# train/valid data split
 x = titan_benchmark
 y = x.pop("Transported").values
 
